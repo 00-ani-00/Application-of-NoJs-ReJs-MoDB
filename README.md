@@ -1,4 +1,3 @@
-# #TWSThreeTierAppChallenge
 
 ## Overview
 This repository hosts the `#TWSThreeTierAppChallenge` for the TWS community. 
@@ -43,21 +42,27 @@ sudo mv ./kubectl /usr/local/bin
 kubectl version --short --client
 ```
 
-### Step 6: Install eksctl
+### step 6:Buld images and pushing them to ecr or docker hub
+``` shell
+
+```
+
+
+### Step 7: Install eksctl
 ``` shell
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
 eksctl version
 ```
 
-### Step 7: Setup EKS Cluster
+### Step 8: Setup EKS Cluster
 ``` shell
 eksctl create cluster --name three-tier-cluster --region us-west-2 --node-type t2.medium --nodes-min 2 --nodes-max 2
 aws eks update-kubeconfig --region us-west-2 --name three-tier-cluster
 kubectl get nodes
 ```
 
-### Step 8: Run Manifests
+### Step 9: Run Manifests
 ``` shell
 kubectl create namespace workshop
 kubectl config set-context --current --namespace workshop
@@ -65,15 +70,15 @@ kubectl apply -f .
 kubectl delete -f .
 ```
 
-### Step 9: Install AWS Load Balancer
+### Step 10: Install AWS Load Balancer
 ``` shell
 curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.4/docs/install/iam_policy.json
 aws iam create-policy --policy-name AWSLoadBalancerControllerIAMPolicy --policy-document file://iam_policy.json
 eksctl utils associate-iam-oidc-provider --region=us-west-2 --cluster=three-tier-cluster --approve
-eksctl create iamserviceaccount --cluster=three-tier-cluster --namespace=kube-system --name=aws-load-balancer-controller --role-name AmazonEKSLoadBalancerControllerRole --attach-policy-arn=arn:aws:iam::626072240565:policy/AWSLoadBalancerControllerIAMPolicy --approve --region=us-west-2
+eksctl create iamserviceaccount --cluster=three-tier-cluster --namespace=kube-system --name=aws-load-balancer-controller --role-name AmazonEKSLoadBalancerControllerRole --attach-policy-arn=arn:aws:iam::211125466016:policy/AWSLoadBalancerControllerIAMPolicy --approve --region=us-west-2
 ```
 
-### Step 10: Deploy AWS Load Balancer Controller
+### Step 11: Deploy AWS Load Balancer Controller
 ``` shell
 sudo snap install helm --classic
 helm repo add eks https://aws.github.io/eks-charts
@@ -94,9 +99,6 @@ eksctl delete cluster --name three-tier-cluster --region us-west-2
 - Deploy the application, adding your creative enhancements.
 - Ensure your code adheres to the project's style and contribution guidelines.
 - Submit a Pull Request with a detailed description of your changes.
-
-## Rewards
-- Successful PR merges will be eligible for exciting prizes!
 
 ## Support
 For any queries or issues, please open an issue in the repository.
